@@ -1,0 +1,14 @@
+# HTTP request settings
+UserAgent = "multisite-healthcheck v1.0"
+HttpTimeout = 3
+AcceptedStatuses = [200, 401]
+ConcurrentRequests = 5
+
+# List of endpoints to check
+[[endpoints]]
+URL = "https://example.test/"
+HeaderHost = "newsner.test"
+
+[[endpoints]]
+URL = "https://sandbox.test/wp-json/wp/v2/posts?per_page=1"
+HeaderHost = "sandbox.test"
