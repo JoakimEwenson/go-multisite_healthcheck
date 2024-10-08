@@ -31,6 +31,9 @@ type RequestResult struct {
 	ResponseCode int    `json:"response_code"`
 }
 
+// Initiate the app config
+var app_config AppConfig
+
 // Function for getting and returning http response codes from supplied endpoint
 func endpoint_caller(endpoint Endpoint, config AppConfig) RequestResult {
 	client := &http.Client{Timeout: time.Duration(time.Second * time.Duration(config.HttpTimeout))}
@@ -101,7 +104,8 @@ func getAppConfig() AppConfig {
 	if file_err != nil {
 		panic(file_err)
 	}
-	var app_config AppConfig
+
+	// Populate app config from toml file
 	toml_err := toml.Unmarshal([]byte(config_file), &app_config)
 	if toml_err != nil {
 		panic(toml_err)
@@ -112,6 +116,8 @@ func getAppConfig() AppConfig {
 
 // Main function running the endpoint
 func main() {
+	app_config = getAppConfig()
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.GET("/health", getHealthStatus)
 
